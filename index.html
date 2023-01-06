@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            background-color: lightgrey;
+            font-family: Arial, sans-serif;
+        }
+
+        #container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0px 50px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            padding: 20px;
+        }
+
+        #container h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        button {
+            background-color: blue;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            transform: scale(1.1);
+        }
+
+        button img {
+            height: 50px;
+            width: 50px;
+        }
+
+        #result {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        #play-again {
+            background-color: green;
+            display: inline-block;
+        }
+
+        .play-again {
+            display: inline-block;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <button id="water"><img src="images/water.png" id="im1">
+            <p id="Ro">Rock</p>
+        </button>
+        <button id="wood"><img src="images/wood.png" id="im2">
+            <p id="Pa">Paper</p>
+        </button>
+        <button id="fire"><img src="images/fire.png" id="im3">
+            <p id="Sc">Scissors</p>
+        </button>
+        <div id="player-choice" class="player-choice"></div>
+        <div id="computer-choice" class="computer-choice"></div>
+        <div id="result"></div>
+        <div id="buttons">
+            <button id="play-again">Play Again</button>
+            <button onclick="history.go(-1)">Go back</button>   
+        </div>
+    </div>
+    <script>
+        const choices = ['water', 'wood', 'fire'];
+
+        // function to determine the winner
+        function determineWinner(playerChoice, computerChoice) {
+            if (playerChoice === computerChoice) {
+                return 'tie';
+            } else if ((playerChoice === 'water' && computerChoice === 'fire') ||
+                (playerChoice === 'wood' && computerChoice === 'water') ||
+                (playerChoice === 'fire' && computerChoice === 'wood')) {
+                return 'player';
+            } else {
+                return 'computer';
+            }
+        }
+
+        // function to get the computer's choice
+        function getComputerChoice() {
+            return choices[Math.floor(Math.random() * choices.length)];
+        }
+
+        // event listeners for the choice buttons
+        for (let i = 0; i < choices.length; i++) {
+            document.getElementById(choices[i]).addEventListener('click', function () {
+                // update player's choice section
+                document.getElementById('player-choice').textContent = this.id;
+                // get computer's choice and update computer's choice section
+                const computerChoice = getComputerChoice();
+                document.getElementById('computer-choice').textContent = computerChoice;
+                // determine the winner and update result section
+                const result = determineWinner(this.id, computerChoice);
+                if (result === 'player') {
+                    document.getElementById('result').textContent = 'You win!';
+                } else if (result === 'computer') {
+                    document.getElementById('result').textContent = 'You lose!';
+                } else {
+                    document.getElementById('result').textContent = 'Its a tie!';
+                }
+            });
+        }
+
+        // event listener for the play again button
+        document.getElementById('play-again').addEventListener('click', function () {
+            // reset player's choice, computer's choice, and result sections
+            document.getElementById('player-choice').textContent = '';
+            document.getElementById('computer-choice').textContent = '';
+            document.getElementById('result').textContent = '';
+        });
+    </script>
+</body>
+
+</html>
